@@ -26,7 +26,7 @@ environment {
 				echo 'Descargando la imagen....'
 				bat "docker pull ${IMAGEN}"
 				echo 'Tageando la imagen....'
-				bat "docker tag ${IMAGEN}${SERVIDOR}/${IMAGEN}:${BUILD_NUMBER}"
+				bat "docker tag ${IMAGEN} ${SERVIDOR}/${IMAGEN}:${BUILD_NUMBER}"
                 echo 'Logueandose en azure...'
 				bat "az acr login -n ${REGISTRY}"
 				echo 'Haciendo push...'
