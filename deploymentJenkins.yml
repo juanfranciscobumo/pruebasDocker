@@ -26,7 +26,7 @@ spec:
             - containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /login
+              path: 
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 300
@@ -39,7 +39,7 @@ spec:
                 command: ["sleep", "90"]
           readinessProbe:
             httpGet:
-              path: /login
+              path: 
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
