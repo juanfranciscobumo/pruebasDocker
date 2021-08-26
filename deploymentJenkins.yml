@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+
+  labels:
+    app: jenkins
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      terminationGracePeriodSeconds: 101
+      containers:
+        - name: jenkins
+          imagePullPolicy: Always
+          image: registrydockerj.azurecr.io/jenkins:BUILD_NUMBER
+
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path:
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 4
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "90"]
+          readinessProbe:
+            httpGet:
+              path: 
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 225m
+              memory: 200Mi
+            limits:
+              memory: 900Mi
+              cpu: 900m
+
+      dnsConfig:
+        options:
+          - name: single-request-reopen
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: pruebajenkinskubernetes
+  name: jenkins
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  selector:
+    app: jenkins
+  type: LoadBalancer
