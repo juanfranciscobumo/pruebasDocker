@@ -46,11 +46,11 @@ spec:
             periodSeconds: 10
           resources:
             requests:
-              cpu: 800m
+              cpu: 800Mi
               memory: 200Mi
             limits:
               memory: 900Mi
-              cpu: 900m
+              cpu: 900Mi
 
       dnsConfig:
         options:
