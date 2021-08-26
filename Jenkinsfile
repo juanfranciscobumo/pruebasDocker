@@ -2,7 +2,7 @@ pipeline {
     agent any
 environment { 
    VERSION = "${BUILD_NUMBER}"
-   IMAGEN = "jenkins"
+   IMAGEN = "sonarqube"
    GRUPO_RECURSOS="PruebasConDocker"
    REGISTRY = "registrydockerj"
    SERVIDOR = "registrydockerj.azurecr.io"
@@ -24,9 +24,9 @@ environment {
                 echo 'Deploying....'
 				echo "Running ${VERSION} on ${JENKINS_URL}"
 				echo 'Descargando la imagen....'
-				bat "docker pull ${IMAGEN}:2.60.3"
+				bat "docker pull ${IMAGEN}"
 				echo 'Tageando la imagen....'
-				bat "docker tag ${IMAGEN}:2.60.3 ${SERVIDOR}/${IMAGEN}:${BUILD_NUMBER}"
+				bat "docker tag ${IMAGEN}${SERVIDOR}/${IMAGEN}:${BUILD_NUMBER}"
                 echo 'Logueandose en azure...'
 				bat "az acr login -n ${REGISTRY}"
 				echo 'Haciendo push...'

@@ -2,31 +2,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins
+  name: sonar
 
   labels:
-    app: jenkins
+    app: sonar
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jenkins
+      app: sonar
   template:
     metadata:
       labels:
-        app: jenkins
+        app: sonar
     spec:
       terminationGracePeriodSeconds: 101
       containers:
-        - name: jenkins
+        - name: sonar
           imagePullPolicy: Always
-          image: registrydockerj.azurecr.io/jenkins:BUILD_NUMBER
-
+          image: registrydockerj.azurecr.io/sonarqube:21
           ports:
             - containerPort: 8080
           livenessProbe:
             httpGet:
-              path: 
+              path: /health/status
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 300
@@ -39,7 +38,7 @@ spec:
                 command: ["sleep", "90"]
           readinessProbe:
             httpGet:
-              path: 
+              path: /health/status
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
@@ -47,10 +46,10 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 500Mi
+              memory: 100Mi
             limits:
-              memory: 900Mi
-              cpu: 900m
+              memory: 400Mi
+              cpu: 500m
 
       dnsConfig:
         options:
@@ -62,12 +61,12 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/azure-dns-label-name: pruebajenkinskubernetes
-  name: jenkins
+  name: sonar
 spec:
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
   selector:
-    app: jenkins
+    app: sonar
   type: LoadBalancer
