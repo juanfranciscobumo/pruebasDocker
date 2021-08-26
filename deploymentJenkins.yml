@@ -27,7 +27,7 @@ spec:
           livenessProbe:
             httpGet:
               path: 
-              port: 8080
+              port: http
               scheme: HTTP
             initialDelaySeconds: 300
             periodSeconds: 4
@@ -40,7 +40,7 @@ spec:
           readinessProbe:
             httpGet:
               path: 
-              port: 8080
+              port: http
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
