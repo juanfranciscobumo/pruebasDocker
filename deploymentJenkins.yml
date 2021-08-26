@@ -22,11 +22,11 @@ spec:
           imagePullPolicy: Always
           image: registrydockerj.azurecr.io/sonarqube:21
           ports:
-            - containerPort: 8080
+            - containerPort: 9000
           livenessProbe:
             httpGet:
-              path: /health/status
-              port: 8080
+              path: /
+              port: 9000
               scheme: HTTP
             initialDelaySeconds: 300
             periodSeconds: 4
@@ -38,8 +38,8 @@ spec:
                 command: ["sleep", "90"]
           readinessProbe:
             httpGet:
-              path: /health/status
-              port: 8080
+              path: /
+              port: 9000
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -65,8 +65,8 @@ metadata:
 spec:
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080
+      port: 9000
+      targetPort: 9000
   selector:
     app: sonar
   type: LoadBalancer
